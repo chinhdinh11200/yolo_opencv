@@ -1,0 +1,6 @@
+path: /home/chinh/tuto-2024-06/opencv/yolo/data
+train: images/train 
+val: images/val  
+
+nc: 1
+names: ['human']
