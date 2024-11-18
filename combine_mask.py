@@ -18,13 +18,17 @@ def create_mask(name_folder):
         combineFiles(i, input_dir, files_need_combine)
 
 def combineFiles(i, input_dir, files):
-    output_dir = './tmp/val_masks'
+    output_dir = './tmp/masks'
     if len(files) > 0:
         combine_mask = cv2.imread(input_dir + files[0])
         for file in files[1:]:
             mask_file = cv2.imread(input_dir + file)
             combine_mask = cv2.bitwise_or(combine_mask, mask_file)
-        cv2.imwrite(f"{output_dir}/{i}.png", combine_mask)
+        original_height, original_width = combine_mask.shape[:2]
+        new_width = original_width * 2
+        new_height = original_height * 2
+        resized_combine_mask = cv2.resize(combine_mask, (new_width, new_height), interpolation=cv2.INTER_NEAREST)
+        cv2.imwrite(f"{output_dir}/{i}.png", resized_combine_mask)
 
 def checkNotIncludes(file):
     part_ignored = ['neck', 'brow', 'eye', 'lip', 'mouth', 'nose', 'cloth']
@@ -34,8 +38,8 @@ def checkNotIncludes(file):
     return True;
 
 def main():
-    num_folders = 7
-    for num_folder in range(5, num_folders):
+    num_folders = 5
+    for num_folder in range(0, num_folders):
         create_mask(num_folder)
 
 main()
